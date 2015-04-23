@@ -14,8 +14,8 @@
 
 
 return array(
-    //"base_url" => "http://dev.store.ac.id/gauth/auth",
-    "base_url" => "http://localhost:8000/gauth/auth",
+    "base_url" => "http://dev.store.ac.id/gauth/auth",
+    //"base_url" => "http://localhost:8000/gauth/auth",
     "providers" => array (
         "Google" => array (
             "enabled" => true,
