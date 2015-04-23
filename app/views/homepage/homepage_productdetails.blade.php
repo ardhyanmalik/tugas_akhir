@@ -16,6 +16,10 @@
     {{HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js')}}
     {{HTML::script('templates/theme/assets/stepper/jquery.stepper.min.js')}}
     {{HTML::style('templates/theme/assets/stepper/jquery.stepper.min.css')}}
+    {{HTML::style('fancybox/source/jquery.fancybox.css?v=2.1.5')}}
+    {{HTML::style('fancybox/source/helpers/jquery.fancybox-buttons.css?v=1.0.5')}}
+    {{HTML::style('fancybox/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7')}}
+
 </head>
 <body class="bg-light" style="height:auto;">
 
@@ -126,14 +130,14 @@
                                             <h6 class="media-heading">{{$produk->produk_downloaded}} Downloaded</h6>
                                             @if($produk->produk_type == "Premium")
                                             <?php
-                                                $harga = {{$produk->produk_harga}};
+                                                $harga = $produk->produk_harga;
                                                 $angka = number_format($harga);
                                                 $angka = str_replace(',', '.', $angka);
-                                                $angka = Rp.".$angka.";
-                                            
-                                            
+                                                $angka = "Rp. ".$angka;
+
+
                                             ?>
-                                            <h2 class="media-heading text-system">$angka</h2>
+                                            <h2 class="media-heading text-system">{{ $angka }}</h2>
                                             @endif
                                             @if(Auth::check())
                                                 @if($produk->produk_type== "Freemium")
@@ -149,65 +153,14 @@
                                                     <button id="button2" type="submit" class="button btn-primary">Purchase</button>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
-                                                    <a href="#ajax-form1" class="modal-example-btn btn btn-lg btn-system mt10 center-block"><i class="fa fa-shopping-cart"></i>Add to Chart</a>
+                                                    {{-- href-nya arahin ke fungsi di controller.. default-nya method get, kalau mau post gampang. banyak tutorialnya di google yan. --}}
+                                                    <a href="{{URL::route('products-product-cart',$produk->id_produk)}}" class="various fancybox.ajax btn btn-lg btn-system mt10 center-block"><i class="fa fa-shopping-cart"></i>Add to Chart</a>
                                                 </div>
                                                 @endif
                                             @endif
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Admin Form Popup -->
-                                <div id="ajax-form1" class="popup-chart admin-form mfp-with-anim mfp-hide">
-                                    <div class="panel">
-                                        <div class="panel-heading">
-                                            <span class="panel-title"><i class="fa fa-shopping-cart"></i>Shooping Chart</span>
-                                        </div>
-                                        <!-- end .panel-heading section -->
-                                        <form method="post" action="{{URL::route('products-premium-products-checkout')}}" id="comment">
-                                        <div class="panel-body p25">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>No</th>
-                                                        <th>Product Tittle</th>
-                                                        <th>Image</th>
-                                                        <th>Quantity</th>
-                                                        <th>Price</th>
-                                                    </tr>   
-                                                </thead>
-                                                <tbody>
-                                                <?php $i=1;?>
-                                                @foreach($cart_content as $cart)
-                                                    <tr>
-                                                        <td>{{ $i }}</td>
-                                                        <td>{{ $cart->name }}</td>
-                                                        <td>
-                                                        <a class="media-left" href="#">
-                                                            <img src="{{$produk->produk_ava}}" alt="{{$produk->produk_title}}" width="75" height="75">
-                                                        </a>
-                                                        </td>
-                                                        <td><input type="text" size="2" id="stepper" value="{{ $cart->qty}}"/></td>
-                                                        <td>{{ $cart->price }}</td>
-                                                    </tr>
-                                                <?php $i++; ?>
-                                                </tbody>
-                                                <tfoot>
-                                                    <tr>
-                                                        <td colspan="4">TOTAL HARGA</td>
-                                                        <td>{{ $cart->angka* $cart->qty}}</td>
-                                                    </tr>
-                                                </tfoot>
-                                                @endforeach
-                                            </table>
-                                        <div class="panel-footer">
-                                            <button type="submit" class="button btn-primary">Purchase</button>
-                                        </div>
-                                        <!-- end .form-footer section -->
-                                        </form>
-                                    </div>
-                                    <!-- end: .panel -->
-                                </div>
-                                <!-- end: .admin-form -->
                             </div>
 
                             <div class="row mt20">
@@ -748,5 +701,30 @@
     });
 </script>
 
+{{--
+    Ini setingan fancybox-nya.. kalau mau lengkap liat di documentasinya aja yan
+--}}
+
+{{HTML::script('fancybox/lib/jquery.mousewheel-3.0.6.pack.js')}}
+{{HTML::script('fancybox/source/jquery.fancybox.pack.js?v=2.1.5')}}
+{{HTML::script('fancybox/source/helpers/jquery.fancybox-buttons.js?v=1.0.5')}}
+{{HTML::script('fancybox/source/helpers/jquery.fancybox-media.js?v=1.0.6')}}
+{{HTML::script('fancybox/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7')}}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".various").fancybox({
+            maxWidth	: 800,
+            maxHeight	: 600,
+            fitToView	: false,
+            width		: '70%',
+            height		: '70%',
+            autoSize	: false,
+            closeClick	: false,
+            openEffect	: 'none',
+            closeEffect	: 'none'
+        });
+    });
+</script>
 
 </body>

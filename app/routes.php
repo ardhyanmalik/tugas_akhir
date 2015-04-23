@@ -92,7 +92,7 @@ Route::get('/products/product-details/{id_produk}', array(
     'as'=>'product-details',
     'uses'=>'HomeController@getProductDetails'
 ));
-Route::get('/products/premium-product/productcart', array(
+Route::get('/products/premium-product/productcart/{id_produk}', array(
     'as'    => 'products-product-cart',
     'uses'  => 'HomeController@getPremiumProductsChart'
 ));

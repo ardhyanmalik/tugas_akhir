@@ -2,18 +2,18 @@
 
 class HomeController extends BaseController {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Default Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| You may wish to use controllers instead of, or in addition to, Closure
-	| based routes. That's great! Here is an example controller method to
-	| get you started. To route to this controller, just add the route:
-	|
-	|	Route::get('/', 'HomeController@showWelcome');
-	|
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | Default Home Controller
+    |--------------------------------------------------------------------------
+    |
+    | You may wish to use controllers instead of, or in addition to, Closure
+    | based routes. That's great! Here is an example controller method to
+    | get you started. To route to this controller, just add the route:
+    |
+    |	Route::get('/', 'HomeController@showWelcome');
+    |
+    */
     /* 
     |--------------------------------------------------------------------------
     | Register
@@ -124,7 +124,7 @@ class HomeController extends BaseController {
         $facebookAddress        =   $profile->address;
 
         $userchecker=DB::table('tb_users')
-                        ->where('email','=',$facebookEmail)->pluck('email');
+            ->where('email','=',$facebookEmail)->pluck('email');
 
         if($userchecker == null){
             $user 	= tb_users::create(array(
@@ -152,7 +152,7 @@ class HomeController extends BaseController {
         }else{
             $user = tb_users::where('email', $facebookEmail)->first();
             Auth::login($user,true);
-			Session::set('role_id', 4);
+            Session::set('role_id', 4);
             return Redirect::intended('/home');
         }
 
@@ -228,7 +228,7 @@ class HomeController extends BaseController {
     public function getLoggedOut()
     {
         // $hauth = new Hybrid_Auth(app_path() . '/config/twitterAuth.php');
-         $hauth = new Hybrid_Auth(app_path() . '/config/fb_auth.php');
+        $hauth = new Hybrid_Auth(app_path() . '/config/fb_auth.php');
         //You can use any of the one provider to get the variable, I am using google
         //this is important to do, as it clears out the cookie
         $hauth=new Hybrid_auth(app_path().'/config/google_auth.php');
@@ -252,7 +252,7 @@ class HomeController extends BaseController {
                 'password'=>'required'
             )
         );
- 
+
         if($validator->fails()){
             //Redirect to the sign in page
             return Redirect::route('account-sign-in')
@@ -342,48 +342,48 @@ class HomeController extends BaseController {
     |--------------------------------------------------------------------------
     |
     */
-	public function homepage(){
+    public function homepage(){
         $parentproduct   = DB::table('tb_category')
-                            ->where('id_parent','=',0)
-                            ->where('category','=',1)
-                            ->where('category_status','=',1)
-                            ->groupBy('category_name')
-                            ->orderBy('category_name','asc')
-                            ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
 
         $parentservice   = DB::table('tb_category')
-                            ->where('id_parent','=',0)
-                            ->where('category','=',2)
-                            ->where('category_status','=',1)
-                            ->groupBy('category_name')
-                            ->orderBy('category_name','asc')
-                            ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
 
         $categoriesproduct =DB::table('tb_category')
-                            ->where('category','=',1)
-                            ->where('category_status','=',1)
-                            ->groupBy('id_parent')
-                            ->get();
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->groupBy('id_parent')
+            ->get();
 
         $subcategory        =DB::table('tb_category')
-                                ->where('id_parent','!=',0)
-                                ->where('category','=',1)
-                                ->where('category_status','=',1)
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','!=',0)
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->orderBy('category_name','asc')
+            ->get();
 
         $categoriesservice =DB::table('tb_category')
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->groupBy('id_parent')
-                                ->get();
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->groupBy('id_parent')
+            ->get();
 
         $subcategorys        =DB::table('tb_category')
-                                ->where('id_parent','!=',0)
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','!=',0)
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->orderBy('category_name','asc')
+            ->get();
 
         $freemium   = DB::table('tb_produk')
             ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
@@ -396,7 +396,7 @@ class HomeController extends BaseController {
             ->orderBy('tb_produk_detail.updated_at','desc')
             ->take(5)
             ->get(array('tb_users.id_user','tb_users.id_contributor','tb_category.category_name','tb_produk_detail.id_produk_detail','tb_produk_detail.produk_link','tb_produk.id_category','tb_produk.produk_title','tb_produk.produk_type','tb_produk_detail.produk_ava','tb_produk_detail.produk_introduction','tb_produk.version_available','tb_produk_detail.updated_at'));
-       
+
         $premium   = DB::table('tb_produk')
             ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
             ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
@@ -407,7 +407,7 @@ class HomeController extends BaseController {
             ->orderBy('tb_produk_detail.updated_at','desc')
             ->take(5)
             ->get(array('tb_users.id_user','tb_users.id_contributor','tb_category.category_name','tb_produk.produk_harga','tb_produk_detail.id_produk_detail','tb_produk_detail.produk_link','tb_produk.id_Category','tb_produk.produk_title','tb_produk.produk_type','tb_produk_detail.produk_ava','tb_produk_detail.produk_introduction','tb_produk_detail.updated_at'));
-		
+
         return View::make('homepage.homepage')
             ->with(array(
                 'freemium'          =>$freemium,
@@ -419,28 +419,29 @@ class HomeController extends BaseController {
                 'subcategorys'      =>$subcategorys,
                 'categoriesservice' =>$categoriesservice,
             ));
-	}
+    }
 
     public function getProductDetails($id_produk_detail){
         $id_produk       = DB::table('tb_produk_detail')
-                            ->where('id_produk_detail',$id_produk_detail)
-                            ->pluck('id_produk');
+            ->where('id_produk_detail',$id_produk_detail)
+            ->pluck('id_produk');
 
         $parentproduct   = DB::table('tb_category')
-                            ->where('id_parent','=',0)
-                            ->where('category','=',1)
-                            ->where('category_status','=',1)
-                            ->groupBy('category_name')
-                            ->orderBy('category_name','asc')
-                            ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
 
         $parentservice   = DB::table('tb_category')
-                            ->where('id_parent','=',0)
-                            ->where('category','=',2)
-                            ->where('category_status','=',1)
-                            ->groupBy('category_name')
-                            ->orderBy('category_name','asc')
-                            ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
+
         $cart_content = Cart::content(1);
 
         $categoriesproduct =DB::table('tb_category')
@@ -470,27 +471,27 @@ class HomeController extends BaseController {
             ->get();
 
         $produkdetail   = DB::table('tb_produk')
-                            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                            ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
-                            ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
-                            ->where('tb_produk_detail.id_produk_detail',$id_produk_detail)
-                            ->where('tb_produk_detail.available',1)
-                            ->where('tb_produk_detail.produk_main',1)
-                            ->get();
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
+            ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
+            ->where('tb_produk_detail.id_produk_detail',$id_produk_detail)
+            ->where('tb_produk_detail.available',1)
+            ->where('tb_produk_detail.produk_main',1)
+            ->get();
 
         $histories      = DB::table('tb_produk')
-                            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                            ->join('tb_users','tb_produk_detail.id_user','=','tb_users.id_user')
-                            ->where('tb_produk.id_produk',$id_produk)
-                            ->orderby('tb_produk_detail.updated_at','desc')
-                            ->take(5)
-                            ->get();
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->join('tb_users','tb_produk_detail.id_user','=','tb_users.id_user')
+            ->where('tb_produk.id_produk',$id_produk)
+            ->orderby('tb_produk_detail.updated_at','desc')
+            ->take(5)
+            ->get();
 
         $userhistory    = DB::table('tb_produk_detail')
-                            ->join('tb_users','tb_produk_detail.reversioning_by','=','tb_users.id_user')
-                            ->where('tb_produk_detail.id_produk',$id_produk)
-                            ->select('*','tb_users.name as reversionoffer')
-                            ->get();
+            ->join('tb_users','tb_produk_detail.reversioning_by','=','tb_users.id_user')
+            ->where('tb_produk_detail.id_produk',$id_produk)
+            ->select('*','tb_users.name as reversionoffer')
+            ->get();
 
 
         for($i=1;$i<=5;$i++){
@@ -499,9 +500,11 @@ class HomeController extends BaseController {
                 ->where('id_produk',$id_produk)
                 ->count();
         }
+
         $total_rate_user= DB::table('tb_rate')
-                            ->where('id_produk',$id_produk)
-                            ->count();
+            ->where('id_produk',$id_produk)
+            ->count();
+
         if (Auth::check()){
             $user_review  = DB::table('tb_rate')
                 ->join('tb_produk','tb_produk.id_produk','=','tb_rate.id_produk')
@@ -514,33 +517,34 @@ class HomeController extends BaseController {
         }
 
         $ratereview   = DB::table('tb_rate')
-                            ->join('tb_produk','tb_produk.id_produk','=','tb_rate.id_produk')
-                            ->join('tb_users','tb_users.id_user','=','tb_rate.id_user')
-                            ->where('tb_produk.id_produk',$id_produk)
-                            ->orderBy('tb_rate.updated_at','desc')
-                            ->get();
-        return View::make('homepage.homepage_productdetails')
-                    ->with(array(
-                        'parentproduct'     =>$parentproduct,
-                        'parentservice'     =>$parentservice,
-                        'categoriesproduct' =>$categoriesproduct,
-                        'categoriesservice' =>$categoriesservice,
-                        'subcategory'       =>$subcategory,
-                        'subcategorys'      =>$subcategorys,
-                        'produkdetail'      =>$produkdetail,
-                        'getstar5'          =>$getstar[5],
-                        'getstar4'          =>$getstar[4],
-                        'getstar3'          =>$getstar[3],
-                        'getstar2'          =>$getstar[2],
-                        'getstar1'          =>$getstar[1],
-                        'total_rate_user'   =>$total_rate_user,
-                        'user_review'       =>$user_review,
-                        'ratereview'        =>$ratereview,
-                        'cart_content'      =>$cart_content,
-                        'histories'         =>$histories,
-                        'userhistory'       =>$userhistory
+            ->join('tb_produk','tb_produk.id_produk','=','tb_rate.id_produk')
+            ->join('tb_users','tb_users.id_user','=','tb_rate.id_user')
+            ->where('tb_produk.id_produk',$id_produk)
+            ->orderBy('tb_rate.updated_at','desc')
+            ->get();
 
-                    ));
+        return View::make('homepage.homepage_productdetails')
+            ->with(array(
+                'parentproduct'     =>$parentproduct,
+                'parentservice'     =>$parentservice,
+                'categoriesproduct' =>$categoriesproduct,
+                'categoriesservice' =>$categoriesservice,
+                'subcategory'       =>$subcategory,
+                'subcategorys'      =>$subcategorys,
+                'produkdetail'      =>$produkdetail,
+                'getstar5'          =>$getstar[5],
+                'getstar4'          =>$getstar[4],
+                'getstar3'          =>$getstar[3],
+                'getstar2'          =>$getstar[2],
+                'getstar1'          =>$getstar[1],
+                'total_rate_user'   =>$total_rate_user,
+                'user_review'       =>$user_review,
+                'ratereview'        =>$ratereview,
+                'cart_content'      =>$cart_content,
+                'histories'         =>$histories,
+                'userhistory'       =>$userhistory
+
+            ));
     }
 
     public function getProductHistory($id_produk){
@@ -587,18 +591,18 @@ class HomeController extends BaseController {
             ->get();
 
         $histories      = DB::table('tb_produk')
-                            ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
-                            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                            ->where('tb_produk.id_produk',$id_produk)
-                            ->orderby('tb_produk_detail.updated_at','desc')
-                            ->take(5)
-                            ->get();
+            ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->where('tb_produk.id_produk',$id_produk)
+            ->orderby('tb_produk_detail.updated_at','desc')
+            ->take(5)
+            ->get();
 
         $userhistory    = DB::table('tb_produk_detail')
-                            ->join('tb_users','tb_produk_detail.reversioning_by','=','tb_users.id_user')
-                            ->where('tb_produk_detail.id_produk',$id_produk)
-                            ->select('*','tb_users.name as reversionoffer')
-                            ->get();
+            ->join('tb_users','tb_produk_detail.reversioning_by','=','tb_users.id_user')
+            ->where('tb_produk_detail.id_produk',$id_produk)
+            ->select('*','tb_users.name as reversionoffer')
+            ->get();
 
         return View::make('homepage.homepage_producthistory')
             ->with(array(
@@ -612,31 +616,41 @@ class HomeController extends BaseController {
                 'userhistory'       => $userhistory
             ));
     }
- 
+
     public function getPremiumProductsPurchase($id_produk){
 
         $category   = DB::table('tb_category')
-                        ->where('category_status','=',1)
-                        ->get();
+            ->where('category_status','=',1)
+            ->get();
         $produk     = DB::table('tb_produk')
-                        ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
-                        ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
-                        ->where('tb_produk.id_produk',$id_produk)
-                        ->get();
+            ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
+            ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
+            ->where('tb_produk.id_produk',$id_produk)
+            ->get();
         $cart_content   = Cart::content(1);
         return View::make('homepage.homepage_premiumproducts_purchase')
-                        ->with(array(
-                                'category'  =>$category,
-                                'produk'    =>$produk,
-                                'cart_content' => $cart_content
+            ->with(array(
+                'category'  =>$category,
+                'produk'    =>$produk,
+                'cart_content' => $cart_content
 
-                            ));
+            ));
     }
 
-    public function getPremiumProductsChart(){
-        
-       
-        $produk    = tb_produk::find($id_produk);
+    public function getPremiumProductsChart($id_produk){
+        /*
+         * Tulis fungsi add to cart-nya disini
+         */
+
+        $id = $id_produk; // <-- test doang
+
+        /*
+         * return nya itu view make halaman yg kamu mau setelah melakukan eksekusi add to cart
+         */
+
+        return View::make('homepage.popup_add_to_cart',compact('id')); // <-- test doang
+
+        /*$produk    = tb_produk::find($id_produk);
         $id        = $produk->id_produk;
         $name      = $produk->produk_title;
         $qty       = 1;
@@ -645,23 +659,23 @@ class HomeController extends BaseController {
 
         $angka = number_format($price);
         $angka = str_replace(',', '.', $angka);
-        $angka =Rp.".$angka.";
+        $angka = "Rp.".$angka;
 
         $data = array(              'id'            => $id,
-                                    'name'          => $name,
-                                    'qty'           => $qty,
-                                    'price'         => $angka
-            );
+            'name'          => $name,
+            'qty'           => $qty,
+            'price'         => $angka
+        );
 
         Cart::add($data);
 
         $cart_content = Cart::content(1);
         return Redirect::back()
-                    ->with('cart_content',$cart_content);
+            ->with('cart_content',$cart_content);*/
 
     }
 
-    
+
 
     public function getPremiumProductsCheckout(){
 
@@ -684,7 +698,7 @@ class HomeController extends BaseController {
 
             $transaction->save();
         }
-        
+
         Cart::destroy();
 
         echo "Checkout Berhasil";
@@ -694,7 +708,7 @@ class HomeController extends BaseController {
         Cart::remove($id_produk);
         return Redirect::route('product-details')
 
-                      ->with('cart_content', $cart_content);
+            ->with('cart_content', $cart_content);
     }
 
 
@@ -742,80 +756,80 @@ class HomeController extends BaseController {
             ->get();
 
         $products           =DB::table('tb_produk')
-                            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                            ->join('tb_category','tb_category.id_category','=','tb_produk.id_category')
-                            ->where('tb_produk.produk_status','=',1)
-                            ->where('tb_produk_detail.available','=',1)
-                            ->where('tb_produk_detail.produk_main','=',1)
-                            ->orderBy('tb_produk_detail.updated_at','desc')
-                            ->paginate(5);
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->join('tb_category','tb_category.id_category','=','tb_produk.id_category')
+            ->where('tb_produk.produk_status','=',1)
+            ->where('tb_produk_detail.available','=',1)
+            ->where('tb_produk_detail.produk_main','=',1)
+            ->orderBy('tb_produk_detail.updated_at','desc')
+            ->paginate(5);
 
 
         return View::make('homepage.homepage_productlist')
-                        ->with(array(
-                            'parentproduct'     =>$parentproduct,
-                            'parentservice'     =>$parentservice,
-                            'categoriesproduct' =>$categoriesproduct,
-                            'subcategory'       =>$subcategory,
-                            'subcategorys'      =>$subcategorys,
-                            'categoriesservice' =>$categoriesservice,
-                            'products'          =>$products,
+            ->with(array(
+                'parentproduct'     =>$parentproduct,
+                'parentservice'     =>$parentservice,
+                'categoriesproduct' =>$categoriesproduct,
+                'subcategory'       =>$subcategory,
+                'subcategorys'      =>$subcategorys,
+                'categoriesservice' =>$categoriesservice,
+                'products'          =>$products,
 
-                        ));
+            ));
     }
 
     public function getProductListFreemium(){
         $parentproduct      = DB::table('tb_category')
-                                ->where('id_parent','=',0)
-                                ->where('category','=',1)
-                                ->where('category_status','=',1)
-                                ->groupBy('category_name')
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
 
         $parentservice      = DB::table('tb_category')
-                                ->where('id_parent','=',0)
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->groupBy('category_name')
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
 
         $categoriesproduct  = DB::table('tb_category')
-                                ->where('category','=',1)
-                                ->where('category_status','=',1)
-                                ->groupBy('id_parent')
-                                ->get();
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->groupBy('id_parent')
+            ->get();
 
         $subcategory        = DB::table('tb_category')
-                                ->where('id_parent','!=',0)
-                                ->where('category','=',1)
-                                ->where('category_status','=',1)
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','!=',0)
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->orderBy('category_name','asc')
+            ->get();
 
         $categoriesservice =DB::table('tb_category')
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->groupBy('id_parent')
-                                ->get();
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->groupBy('id_parent')
+            ->get();
 
         $subcategorys        = DB::table('tb_category')
-                                ->where('id_parent','!=',0)
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','!=',0)
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->orderBy('category_name','asc')
+            ->get();
 
         $products           = DB::table('tb_produk')
-                                ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                                ->join('tb_category','tb_category.id_category','=','tb_produk.id_category')
-                                ->where('tb_produk.produk_type','=','Freemium')
-                                ->where('tb_produk.produk_status','=',1)
-                                ->where('tb_produk_detail.available','=',1)
-                                ->where('tb_produk_detail.produk_main','=',1)
-                                ->orderBy('tb_produk_detail.updated_at','desc')
-                                ->paginate(5);
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->join('tb_category','tb_category.id_category','=','tb_produk.id_category')
+            ->where('tb_produk.produk_type','=','Freemium')
+            ->where('tb_produk.produk_status','=',1)
+            ->where('tb_produk_detail.available','=',1)
+            ->where('tb_produk_detail.produk_main','=',1)
+            ->orderBy('tb_produk_detail.updated_at','desc')
+            ->paginate(5);
 
 
         return View::make('homepage.homepage_freemiumshowmore')
@@ -833,56 +847,56 @@ class HomeController extends BaseController {
 
     public function getProductListCategory($id_category){
         $parentproduct      = DB::table('tb_category')
-                                ->where('id_parent','=',0)
-                                ->where('category','=',1)
-                                ->where('category_status','=',1)
-                                ->groupBy('category_name')
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
 
         $parentservice      = DB::table('tb_category')
-                                ->where('id_parent','=',0)
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->groupBy('category_name')
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','=',0)
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->groupBy('category_name')
+            ->orderBy('category_name','asc')
+            ->get();
 
         $categoriesproduct  = DB::table('tb_category')
-                                ->where('category','=',1)
-                                ->where('category_status','=',1)
-                                ->groupBy('id_parent')
-                                ->get();
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->groupBy('id_parent')
+            ->get();
 
         $subcategory        = DB::table('tb_category')
-                                ->where('id_parent','!=',0)
-                                ->where('category','=',1)
-                                ->where('category_status','=',1)
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','!=',0)
+            ->where('category','=',1)
+            ->where('category_status','=',1)
+            ->orderBy('category_name','asc')
+            ->get();
 
         $categoriesservice =DB::table('tb_category')
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->groupBy('id_parent')
-                                ->get();
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->groupBy('id_parent')
+            ->get();
 
         $subcategorys        = DB::table('tb_category')
-                                ->where('id_parent','!=',0)
-                                ->where('category','=',2)
-                                ->where('category_status','=',1)
-                                ->orderBy('category_name','asc')
-                                ->get();
+            ->where('id_parent','!=',0)
+            ->where('category','=',2)
+            ->where('category_status','=',1)
+            ->orderBy('category_name','asc')
+            ->get();
 
         $products           = DB::table('tb_produk')
-                                ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                                ->join('tb_category','tb_category.id_category','=','tb_produk.id_category')
-                                ->where('tb_produk.id_category','=',$id_category)
-                                ->where('tb_produk.produk_status','=',1)
-                                ->where('tb_produk_detail.available','=',1)
-                                ->where('tb_produk_detail.produk_main','=',1)
-                                ->orderBy('tb_produk_detail.updated_at','desc')
-                                ->paginate(5);
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->join('tb_category','tb_category.id_category','=','tb_produk.id_category')
+            ->where('tb_produk.id_category','=',$id_category)
+            ->where('tb_produk.produk_status','=',1)
+            ->where('tb_produk_detail.available','=',1)
+            ->where('tb_produk_detail.produk_main','=',1)
+            ->orderBy('tb_produk_detail.updated_at','desc')
+            ->paginate(5);
 
         return View::make('homepage.homepage_productcategory')
             ->with(array(
@@ -918,9 +932,9 @@ class HomeController extends BaseController {
                 $id_user        = Auth::user()->id_user;
                 //find user activity on rate and review
                 $checker        = DB::table('tb_rate')
-                                    ->where('id_produk',$id_produk)
-                                    ->where('id_user',$id_user)
-                                    ->first();
+                    ->where('id_produk',$id_produk)
+                    ->where('id_user',$id_user)
+                    ->first();
                 if($checker == null){
 
                     $new_rate       = tb_rate::create(array(
@@ -950,21 +964,21 @@ class HomeController extends BaseController {
                         ->with('success','Thank you for your rating and review');
                 }else{
                     $rate   = DB::table('tb_rate')
-                                ->where('id_produk',$id_produk)
-                                ->where('id_user',$id_user)
-                                ->update(array(
-                                        'review_title'  =>$review_title,
-                                        'review_post'   =>$review_post,
-                                        'user_rate'     =>$product_rate,
-                                        'updated_at'    =>DB::raw('NOW()')
-                                ));
+                        ->where('id_produk',$id_produk)
+                        ->where('id_user',$id_user)
+                        ->update(array(
+                            'review_title'  =>$review_title,
+                            'review_post'   =>$review_post,
+                            'user_rate'     =>$product_rate,
+                            'updated_at'    =>DB::raw('NOW()')
+                        ));
 
                     $totalcount =DB::table('tb_rate')
-                                    ->where('id_produk',$id_produk)
-                                    ->sum('user_rate');
+                        ->where('id_produk',$id_produk)
+                        ->sum('user_rate');
                     $total_user = DB::table('tb_produk')
-                                    ->where('id_produk',$id_produk)
-                                    ->pluck('user_rate_total');
+                        ->where('id_produk',$id_produk)
+                        ->pluck('user_rate_total');
                     $result     = $totalcount/$total_user;
                     $produk_rate_total  = tb_produk::find($id_produk);
                     $produk_rate_total  -> produk_rate_total =  $result;
@@ -1006,14 +1020,14 @@ class HomeController extends BaseController {
             //change password
             $user = tb_users::where('email','=',$this->xssafe(Input::get('email')));
             $userrole= DB::table('tb_users')
-                            ->where('email','=',$this->xssafe(Input::get('email')))
-                            ->pluck('role_id');
+                ->where('email','=',$this->xssafe(Input::get('email')))
+                ->pluck('role_id');
             $username   = DB::table('tb_users')
-                            ->where('email','=',$this->xssafe(Input::get('email')))
-                            ->pluck('username');
+                ->where('email','=',$this->xssafe(Input::get('email')))
+                ->pluck('username');
             $name        = DB::table('tb_users')
-                            ->where('email','=',$this->xssafe(Input::get('email')))
-                            ->pluck('name');
+                ->where('email','=',$this->xssafe(Input::get('email')))
+                ->pluck('name');
             if($user->count() && $userrole != 3 && $username!= null){
                 $user= $user->first();
 
@@ -1066,27 +1080,27 @@ class HomeController extends BaseController {
         return View::make('homepage.createaccount');
     }
     public function getFAQ(){
-    	return View::make('homepage.homepage_faq');
+        return View::make('homepage.homepage_faq');
     }
 
     public function getProfile(){
         return View::make('homepage.profile');
     }
 
-/*
-|--------------------------------------------------------------------------
-| Freemium Downloaded
-|--------------------------------------------------------------------------
-|
-*/
+    /*
+    |--------------------------------------------------------------------------
+    | Freemium Downloaded
+    |--------------------------------------------------------------------------
+    |
+    */
     public function getDownload($produk_link){
         $id_produk_detail = DB::table('tb_produk_detail')
-                            ->where('produk_link',$produk_link)
-                            ->pluck('id_produk_detail');
+            ->where('produk_link',$produk_link)
+            ->pluck('id_produk_detail');
 
         $url=DB::table('tb_produk_detail')
-                    ->where('id_produk_detail',$id_produk_detail)
-                    ->pluck('produk_file');
+            ->where('id_produk_detail',$id_produk_detail)
+            ->pluck('produk_file');
 
         $id_produk= DB::table('tb_produk_detail')
             ->where('id_produk_detail',$id_produk_detail)
@@ -1095,61 +1109,61 @@ class HomeController extends BaseController {
         $product=tb_produk::find($id_produk);
         $product    -> produk_downloaded += 1;
         $product    ->save();
-       return Redirect::to($url);
+        return Redirect::to($url);
     }
 
 
 
-/*
-|--------------------------------------------------------------------------
-| Security Methods
-|--------------------------------------------------------------------------
-|
-*/
+    /*
+    |--------------------------------------------------------------------------
+    | Security Methods
+    |--------------------------------------------------------------------------
+    |
+    */
     public function postAdvanceSearch(){
         $keywords   = $this->xssafe(Input::get('keywords'));
 
-         $queries   = DB::table('tb_produk')
-                        ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
-                        ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
-                        ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                        ->where('tb_produk.produk_status','=',1)
-                        ->where('tb_produk.produk_title', 'LIKE', '%'.$keywords.'%')
-                        ->orWhere('tb_users.name', 'LIKE', '%'.$keywords.'%')
-                        ->groupBy('tb_produk.id_produk')
-                        ->paginate(5);
+        $queries   = DB::table('tb_produk')
+            ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
+            ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->where('tb_produk.produk_status','=',1)
+            ->where('tb_produk.produk_title', 'LIKE', '%'.$keywords.'%')
+            ->orWhere('tb_users.name', 'LIKE', '%'.$keywords.'%')
+            ->groupBy('tb_produk.id_produk')
+            ->paginate(5);
 
         $counter   = DB::table('tb_produk')
-                        ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
-                        ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
-                        ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
-                        ->where('tb_produk.produk_status','=',1)
-                        ->where('tb_produk.produk_title', 'LIKE', '%'.$keywords.'%')
-                        ->orWhere('tb_users.name', 'LIKE', '%'.$keywords.'%')
-                        ->groupBy('tb_produk.id_produk')
-                        ->get();
+            ->join('tb_users','tb_produk.id_user','=','tb_users.id_user')
+            ->join('tb_category','tb_produk.id_category','=','tb_category.id_category')
+            ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
+            ->where('tb_produk.produk_status','=',1)
+            ->where('tb_produk.produk_title', 'LIKE', '%'.$keywords.'%')
+            ->orWhere('tb_users.name', 'LIKE', '%'.$keywords.'%')
+            ->groupBy('tb_produk.id_produk')
+            ->get();
         $category_option = DB::table('tb_category')
-                            ->where('id_parent','!=','0')
-                            ->where('category_status','=',1)
-                            ->orderBy('category_name')
-                            ->lists('category_name', 'id_category');
+            ->where('id_parent','!=','0')
+            ->where('category_status','=',1)
+            ->orderBy('category_name')
+            ->lists('category_name', 'id_category');
         $category=array(''=>'Select Category')+$category_option;
 
         return View::make('homepage.homepage_search', compact('queries'))
-                    ->with(array(
-                        'queries'           => $queries,
-                        'counter'           => $counter,
-                        'category'          => $category
-                    ));
+            ->with(array(
+                'queries'           => $queries,
+                'counter'           => $counter,
+                'category'          => $category
+            ));
     }
 
 
-/*
-|--------------------------------------------------------------------------
-| Security Methods
-|--------------------------------------------------------------------------
-|
-*/
+    /*
+    |--------------------------------------------------------------------------
+    | Security Methods
+    |--------------------------------------------------------------------------
+    |
+    */
 
     public function xssafe($data,$encoding='UTF-8')
     {
