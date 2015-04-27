@@ -96,13 +96,25 @@ Route::get('/products/premium-product/productcart/{id_produk}', array(
     'as'    => 'products-product-cart',
     'uses'  => 'HomeController@getPremiumProductsChart'
 ));
+
+Route::get('/product/view/productcart', array(
+    'as'    => 'view-product-cart',
+    'uses'  => 'HomeController@getViewProductsChart'
+));
+
+
 Route::post('/products/productcart/delete/{id_produk}',array(
     'as'    => 'productcart-delete',
     'uses'  => 'HomeController@postDeleteProductChart'
 ));
-Route::post('/products/premium-products/checkout', array(
+Route::get('/products/premium-products/checkout', array(
     'as'=>'products-premium-products-checkout',
     'uses'=> 'HomeController@getPremiumProductsCheckout'
+));
+
+Route::get('/products/premium-product/checkout_shop/{id_nomor_transaksi}', array(
+    'as'    => 'products-premium-products-checkout-shop',
+    'uses'  => 'HomeController@getViewCheckout'
 ));
 
 Route::get('/account/sign-in', array(
@@ -255,12 +267,6 @@ Route::get('/dashboard-payment', array(
     'before'=>'permission',
     'uses' => 'PaymentController@getPaymentDashboard'
 ));
-
-
-
-
-
-
 
 /*
 |--------------------------------------------------------------------------

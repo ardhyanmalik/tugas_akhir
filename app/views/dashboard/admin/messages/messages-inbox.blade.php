@@ -235,7 +235,7 @@
                 e.preventDefault();
 
                 // Redirect to message compose page if clicked item is not a checkbox
-                window.location = "";
+                window.location = "{{URL::route('dashboard-administrator-messages')}}";
             });
 
             // example email compose success notification

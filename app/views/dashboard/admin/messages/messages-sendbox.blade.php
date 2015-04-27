@@ -61,13 +61,11 @@
                                     <li class="">
                                         <a href="{{URL::route('dashboard-administrator-messages-inbox')}}" class="text-dark fw600 p8 animated animated-short fadeInDown">
                                             <span class="fa fa-envelope pr5"></span> Inbox
-                                            <span class="pull-right lh20 h-20 label label-warning label-sm">12</span>
                                         </a>
                                     </li>
                                     <li class="active">
                                         <a href="{{URL::route('dashboard-administrator-messages-sendbox')}}" class="text-dark fw600 p8 animated animated-short fadeInDown">
                                             <span class="fa fa-envelope pr5"></span> Sentbox
-                                            <span class="pull-right lh20 h-20 label label-warning label-sm">12</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -234,9 +232,10 @@
                 // stop event bubble if clicked item is not a checkbox
                 e.stopPropagation();
                 e.preventDefault();
-
+                @foreach($datamessage as $datamessages)
                 // Redirect to message compose page if clicked item is not a checkbox
-                window.location = "{{URL::route('dashboard-administrator-messages-compose')}}";
+                window.location = "{{URL::route('dashboard-administrator-messages', $datamessages['id_message'] )}}";
+                @endforeach
             });
 
             // On button click display quick compose message form

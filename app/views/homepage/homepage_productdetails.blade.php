@@ -40,6 +40,11 @@
                     <li class="#">Product Details</li>
                 </ol>
             </div>
+            <div class="topbar-right">
+                <div class="btn-group">
+                    <a href="#modal-form1"  class="modal-example-btn btn btn-lg btn-system mt10 center-block btn btn-danger" title="View Cart"><i class="fa fa-shopping-cart"></i></a>
+                </div>
+            </div>
         </header>
 
         <div class="row">
@@ -104,7 +109,6 @@
                                         <?php $i++;?>
                                     @endforeach
                                 </div>
-
                             </div>
                         </div>
 
@@ -147,20 +151,67 @@
                                                 </div>
                                                 @endif
                                                 @if($produk->produk_type == "Premium")
-                                                <div class="col-sm-12 col-md-6">
-                                                    <a href="{{URL::route('products-product-cart',$produk->id_produk)}}" class="media-heading btn btn-lg btn-system dark"><i class="fa fa-download"> Download</i>
-                                                    </a>
-                                                    <button id="button2" type="submit" class="button btn-primary">Purchase</button>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6">
-                                                    {{-- href-nya arahin ke fungsi di controller.. default-nya method get, kalau mau post gampang. banyak tutorialnya di google yan. --}}
-                                                    <a href="{{URL::route('products-product-cart',$produk->id_produk)}}" class="various fancybox.ajax btn btn-lg btn-system mt10 center-block"><i class="fa fa-shopping-cart"></i>Add to Chart</a>
+                                                <div class="col-xs-6 col-sm-12 col-md-150 col-lg-2 mt15 mb5 pn">
+                                                    <a href="{{URL::route('products-product-cart',$produk->id_produk)}}" class="various fancybox.ajax btn btn-lg btn-system dark"><i class="fa fa-shopping-cart"></i>Add to Chart</a>
                                                 </div>
                                                 @endif
                                             @endif
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Admin Form Popup -->
+                                <div id="modal-form1" class="popup-chart admin-form mfp-with-anim mfp-hide">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <span class="panel-title"><i class="fa fa-shopping-cart"></i>Shooping Chart</span>
+                                        </div>
+                                        <!-- end .panel-heading section -->
+                                        <form method="get" action="{{URL::route('products-premium-products-checkout')}}" id="comment">
+                                        <div class="panel-body p25">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Product Tittle</th>
+                                                        <th>Image</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                    </tr>   
+                                                </thead>
+                                                <tbody>
+                                                <?php $i=1;?>
+                                                @foreach($cart_content as $cart)
+                                                    <tr>
+                                                        <td>{{ $i }}</td>
+                                                        <td>{{ $cart->name }}</td>
+                                                        <td>
+                                                        <a class="media-left" href="#">
+                                                            <img src="{{$produk->produk_ava}}" alt="{{$produk->produk_title}}" width="75" height="75">
+                                                        </a>
+                                                        </td>
+                                                        <td>{{ $cart->qty}}</td>
+                                                        <td>{{ $cart->price }}</td>
+                                                    </tr>
+                                                <?php $i++; ?>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <td colspan="4">TOTAL HARGA</td>
+                                                        <td>{{$cart->total}}</td>
+                                                    </tr>
+                                                </tfoot>
+                                                @endforeach
+                                            </table>
+                                        <div class="panel-footer">
+                                            <!--  <a href="{{URL::route('products-premium-products-checkout')}}" class="media-heading right btn btn-sm  btn-success"><i class="fa fa-share"> Checkout</i>
+                                            </a>   -->
+                                            <button type="submit" class="button btn-primary ">Submit</button>                              
+                                        </div>
+                                        <!-- end .form-footer section -->
+                                        </form>
+                                        </div>
+                                </div>
+                                <!-- end: .admin-form -->
                             </div>
 
                             <div class="row mt20">
@@ -343,7 +394,7 @@
                                                 @endif
                                             </div>
                                             <div class="panel-footer text-right">
-                                                <button type="submit" class="button btn-primary ">Submit</button>
+                                                 <button type="submit" class="button btn-primary ">Submit</button>
                                                 {{ Form::token() }}
                                             </div>
                                         </form>
@@ -612,26 +663,6 @@
                 $('#out').html( out );
         }
 
-        var ajaxmodal = $('#ajax-content');
-     /* ajaxmodal.on('click', '.holder-style', function(e){
-            $.post();
-        ajaxmodal.find('.holder-style').removeClass('holder-active');
-            $(this).addClass('holder-active');
-        })*/
-
-        $('#button2').click(function(){
-            $.ajax({
-                type: "POST",
-                url : "{{URL::route('products-product-cart')}}",
-                data: "57",
-                success : function(
-                    ajaxmodal.find('.holder-style').removeClass('holder-active');
-                    $(this).addClass('holder-active');
-
-                )
-            });
-        });
-
         var modalContent = $('#modal-content');
 
         modalContent.on('click', '.holder-style', function(e) {
@@ -700,10 +731,6 @@
 
     });
 </script>
-
-{{--
-    Ini setingan fancybox-nya.. kalau mau lengkap liat di documentasinya aja yan
---}}
 
 {{HTML::script('fancybox/lib/jquery.mousewheel-3.0.6.pack.js')}}
 {{HTML::script('fancybox/source/jquery.fancybox.pack.js?v=2.1.5')}}

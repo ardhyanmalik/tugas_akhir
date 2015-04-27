@@ -442,8 +442,6 @@ class HomeController extends BaseController {
             ->orderBy('category_name','asc')
             ->get();
 
-        $cart_content = Cart::content(1);
-
         $categoriesproduct =DB::table('tb_category')
             ->where('category','=',1)
             ->where('category_status','=',1)
@@ -493,6 +491,7 @@ class HomeController extends BaseController {
             ->select('*','tb_users.name as reversionoffer')
             ->get();
 
+        $cart_content = Cart::content(1);
 
         for($i=1;$i<=5;$i++){
             $getstar[$i]       = DB::table('tb_rate')
@@ -540,8 +539,8 @@ class HomeController extends BaseController {
                 'total_rate_user'   =>$total_rate_user,
                 'user_review'       =>$user_review,
                 'ratereview'        =>$ratereview,
-                'cart_content'      =>$cart_content,
                 'histories'         =>$histories,
+                'cart_content'      =>$cart_content,
                 'userhistory'       =>$userhistory
 
             ));
@@ -638,70 +637,79 @@ class HomeController extends BaseController {
     }
 
     public function getPremiumProductsChart($id_produk){
-        /*
-         * Tulis fungsi add to cart-nya disini
-         */
 
-        $id = $id_produk; // <-- test doang
+        $produk     = tb_produk::find($id_produk);
+        $id         = $produk->id_produk;
+        $name       = $produk->produk_title;
+        $qty        = 1;
+        $price      = $produk->produk_harga;
 
-        /*
-         * return nya itu view make halaman yg kamu mau setelah melakukan eksekusi add to cart
-         */
 
-        return View::make('homepage.popup_add_to_cart',compact('id')); // <-- test doang
+        $data       = array(              
 
-        /*$produk    = tb_produk::find($id_produk);
-        $id        = $produk->id_produk;
-        $name      = $produk->produk_title;
-        $qty       = 1;
-        $image     = $produk->produk_ava;
-        $price     = $produk->produk_harga;
-
-        $angka = number_format($price);
-        $angka = str_replace(',', '.', $angka);
-        $angka = "Rp.".$angka;
-
-        $data = array(              'id'            => $id,
+            'id'            => $id,
             'name'          => $name,
             'qty'           => $qty,
-            'price'         => $angka
+            'price'         => $price,
         );
 
         Cart::add($data);
-
         $cart_content = Cart::content(1);
-        return Redirect::back()
-            ->with('cart_content',$cart_content);*/
 
+            return View::make('homepage.popup_add_to_cart', compact('cart_content','produk_detail'));
     }
 
 
-
     public function getPremiumProductsCheckout(){
+
 
         $number = (string)rand(0000, 9999);
         $formid = $number;
         $cart_content   = Cart::content(1);
 
+        $nomortransaction = tb_nomor_transaksi::create(array(
+            'nomor_transaksi'    => $formid,
+            'total_transaksi'   => Cart::total()
+            ));
+
         foreach ($cart_content as $cart){
+           
 
-            $transaction    = new tb_transaksi();
-            $product    = tb_produk::find($cart->id);
+            $transaction = tb_transaksi::create(array(
 
-
-            $transaction->id_produk             = $cart->id;
-            $transaction->quantity              = $cart->qty;
-            $transaction->total_harga           = $cart->price * $cart->qty;
-            $transaction->status                = 0;
-            $transaction->nomortransaksi        = $formid;
-            $transaction->id_user               = Auth::user()->id_user;
-
-            $transaction->save();
+                'id_produk'         => $cart->id,
+                'quantity'          => $cart->qty,
+                'total_harga'       => $cart->price * $cart->qty,
+                'status'            => 0,
+                'id_nomor_transaksi'=> $nomortransaction->id_nomor_transaksi,
+                'id_user'           => Auth::user()->id_user
+            ));
         }
 
-        Cart::destroy();
+        $usermail = Auth::user()->email;
 
-        echo "Checkout Berhasil";
+/*        if($usermail) {
+            Mail::send('emails.account.deleted.administratordeleted', array($usermail), function($message) use ($usermail){
+                $message->to($usermail)->subject('Product Purchased');
+            });
+    
+        }*/
+        Cart::destroy();
+     
+ /*     return Redirect::back();*/
+
+
+ return Redirect::route('products-premium-products-checkout-shop', array('id_nomor_transaksi'));
+    }
+
+    public function getViewCheckout($id_nomor_transaksi){
+
+        $transaction = DB::table('tb_nomor_transaksi')
+                        ->where('id_nomor_transaksi',$id_nomor_transaksi)
+                        ->get();
+
+        return View::make('homepage.homepage_checkout_shop')
+            ->with('transaction', $transaction);
     }
 
     public function postDeleteProductChart($id_produk){

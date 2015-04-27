@@ -187,14 +187,10 @@ class AdminController extends BaseController {
       | Manage Messages
       |--------------------------------------------------------------------------
      */
-
+ 
     public function getDataMessages($id_messages){
 
-        /*$request['id_user_receiver']    = Session::get('user_id');
-        $messages   = DB::table('tb_message')
-                            ->join('tb_users','tb_message.id_user_sender','=','tb_users.id_user')
-                            ->get('tb_message.id_messages','tb_message.id_user_sender','tb_users.name','tb_message.messages_post');*/
-
+        
         $request['id_user_receiver']    = Session::get('user_id');
         $datauser = DB::table('tb_users')
                 ->get(array('id_user', 'name', 'username','user_photo'));
@@ -228,12 +224,13 @@ class AdminController extends BaseController {
                 ->get(array('id_user', 'name', 'username','user_photo'));
         $datamessage = DB::table('tb_message')
                 ->where('id_user_receiver','=', $request)
-                ->get(array('id_user_sender','subject','message_post','created_at'));
+                ->get(array('id_message','id_user_sender','subject','message_post','created_at'));
         $data=[];
         foreach($datamessage as $value) {
             foreach($datauser as $valueuser) {
                 if($valueuser->id_user == $value->id_user_sender) {
                     $data[] = array(
+                        'id_message' => $value->id_message,
                         'photo' => $valueuser->user_photo,
                         'name' => $valueuser->name,
                         'subject' => $value->subject,
@@ -262,6 +259,7 @@ class AdminController extends BaseController {
             foreach($datauser as $valueuser) {
                 if($valueuser->id_user == $value->id_user_receiver) {
                     $data[] = array(
+                        'id_message' => $value->id_message,
                         'name' => $valueuser->name,
                         'subject' => $value->subject,
                         'message' => $value->message_post,

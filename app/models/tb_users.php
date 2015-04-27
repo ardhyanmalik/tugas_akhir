@@ -23,6 +23,17 @@ class tb_users extends Eloquent implements UserInterface, RemindableInterface {
         self::find($id_user)->delete();
     }
 
+    public function message(){
+        return $this->hasMany('tb_message');
+    }
+
+    public function newMessage(){
+        $message = new tb_message;
+        $message->tb_users->associate($this);
+
+        return $message;
+    }
+
     /**
      * The attributes excluded from the model's JSON form.
      *

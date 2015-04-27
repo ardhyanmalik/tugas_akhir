@@ -194,9 +194,17 @@
                                         <h5 class="media-heading">
                                             <span class="text-system">{{$premiums->produk_type}}</span> 
                                             | <span class="text-danger-darker">{{$premiums->category_name}}</span>
-                                        </h5>
+                                        </h5> 
+                                         <?php
+                                                $harga = $premiums->produk_harga;
+                                                $angka = number_format($harga);
+                                                $angka = str_replace(',', '.', $angka);
+                                                $angka = "Rp. ".$angka;
+
+
+                                        ?>
                                         <p class="text-danger">
-                                            Rp. {{$premiums->produk_harga}},00
+                                            {{$angka}}
                                         </p>
                                         <p class="text-justify">
                                         {{$premiums->produk_introduction}}
@@ -209,14 +217,12 @@
                                     <div class="col-md-12">
                                         <a href="{{URL::route('product-details',$premiums->id_produk_detail)}}" class="btn btn-system "><i class="fa fa-info-circle"> Details</i>
                                         </a>
-                                        <h3>Rp. {{$premiums->produk_harga}}</h3>
                                     </div>
                                     <br>
                                 @else
                                     <div class="col-md-12">
                                         <a href="{{URL::route('product-details',$premiums->id_produk_detail)}}" class="btn btn-system btn-block "><i class="fa fa-info-circle"> Details</i>
                                         </a>
-                                        <h4>Rp. {{$premiums->produk_harga}},00</h2>
                                     </div>
                                 @endif
                                 </div>

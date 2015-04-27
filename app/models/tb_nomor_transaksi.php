@@ -5,7 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class tb_message extends Eloquent implements UserInterface, RemindableInterface {
+class tb_nomor_transaksi extends Eloquent implements UserInterface, RemindableInterface {
 
     use UserTrait, RemindableTrait;
 
@@ -14,8 +14,9 @@ class tb_message extends Eloquent implements UserInterface, RemindableInterface 
      *
      * @var string
      */
-    public $primaryKey='id_message';
-    protected $table = 'tb_message';
+    protected $fillable = ['id_nomor_transaksi','nomor_transaksi','total_transaksi','status_pembayaran','created_at'];
+    public $primaryKey='id_nomor_transaksi';
+    protected $table = 'tb_nomor_transaksi';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -23,16 +24,9 @@ class tb_message extends Eloquent implements UserInterface, RemindableInterface 
      * @var array
      */
     protected $hidden = array('password', 'remember_token');
-    
-    protected $fillable = array('id_user_sender','id_user_receiver','subject','message_post');
 
-    public function user() {
-        return $this->belongsTo('tb_user');
+    public function transaksi() {
+        return $this->hasMany('tb_transaksi');
     }
-
-    public function scopeUnread($query){
-        return $query->where('is_read','=',0)
-    }
-2
 
 }

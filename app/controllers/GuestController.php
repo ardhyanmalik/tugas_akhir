@@ -11,7 +11,7 @@ class GuestController extends BaseController {
 
             }
         });
-    }
+    } 
     public function getGuestDashboard(){
         return View::make('dashboard.guest.guest_main');
     } 
@@ -327,10 +327,13 @@ class GuestController extends BaseController {
 
     public function getGuestPurchasedProduct(){
         $orderproduct   = DB::table('tb_transaksi')
+                            ->join('tb_nomor_transaksi','tb_transaksi.id_nomor_transaksi','=','tb_nomor_transaksi.id_nomor_transaksi')
                             ->join('tb_produk','tb_transaksi.id_produk','=','tb_produk.id_produk')
                             ->join('tb_produk_detail','tb_produk.id_produk','=','tb_produk_detail.id_produk')
                             ->where('tb_transaksi.id_user','=',Auth::user()->id_user)
-                            ->get(array('tb_transaksi.id_transaksi','tb_transaksi.total_harga','tb_produk.produk_title','tb_produk_detail.produk_ava','tb_transaksi.status'));
+                            ->orderBy('created_at','desc' )
+                            ->get(array('tb_transaksi.id_transaksi','tb_produk_detail.id_produk_detail','tb_produk.id_produk','tb_transaksi.total_harga','tb_produk.produk_title','tb_produk_detail.produk_ava','tb_transaksi.status','tb_transaksi.created_at','tb_nomor_transaksi.nomor_transaksi'));
+
 
     	return View::make('dashboard.guest.product.purchased-product')
                         ->with('orderproduct', $orderproduct);

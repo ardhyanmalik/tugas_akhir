@@ -14,7 +14,7 @@ class tb_transaksi extends Eloquent implements UserInterface, RemindableInterfac
      *
      * @var string
      */
-    protected $fillable = ['id_transaksi','id_user','id_produk','quantity','total_harga','alamat','status','created_at','updated_at'];
+    protected $fillable = ['id_transaksi','id_user','id_produk','quantity','total_harga','alamat','status','id_nomor_transaksi','created_at','updated_at'];
     public $primaryKey='id_transaksi';
     protected $table = 'tb_transaksi';
 
@@ -30,6 +30,9 @@ class tb_transaksi extends Eloquent implements UserInterface, RemindableInterfac
     }
      public function produk() {
         return $this->hasMany('tb_produk');
+    }
+    public function nomor(){
+        return $this->belongsToMany('tb_nomor_transaksi');
     }
 
 }

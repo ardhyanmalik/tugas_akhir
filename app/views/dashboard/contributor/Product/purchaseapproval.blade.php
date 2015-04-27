@@ -75,7 +75,6 @@
                                         <thead>
                                         <tr>
                                             <th class="text-center">No</th>
-                                            <th class="text-center">Name</th>
                                             <th class="text-center">Product</th>
                                             <th class="text-center">Total</th>
                                             <th class="text-center">Date</th>
@@ -88,7 +87,6 @@
                                                 <tr>
                                                     <td>{{ $i }}</td>
                                                     <td>{{$transactions->name}}</td>
-                                                    <td>{{$transactions->produk_title}}</td>
                                                     <td>{{$transactions->total_harga}}</td>
                                                     <td>{{$transactions->created_at}}</td>
                                                     <td>

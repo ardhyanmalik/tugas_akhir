@@ -76,7 +76,8 @@
                                         <tr>
                                             <th class="text-center">No</th>
                                             <th class="text-center">Product Title</th>
-                                            <th class="text-center">Image</th>
+                                            <th class="text-center">Nomor Transaksi</th>
+                                            <th class="text-center">Date</th>
                                             <th class="text-center">Price</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Action</th>
@@ -88,7 +89,8 @@
                                                 <tr>
                                                     <td>{{ $i }}</td>
                                                     <td>{{$order->produk_title}}</td>
-                                                    <td>Image</td>
+                                                    <td>{{$order->nomor_transaksi}}</td>
+                                                    <td>{{$order->created_at}}</td>
                                                     <td>{{$order->total_harga}}</td>
                                                     <td>
                                                     <?php
@@ -105,8 +107,9 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            <a href="#" class="btn btn-warning" title="Info Details"><i class="fa fa-info-circle"></i></a>
+                                                            <a href="{{URL::route('product-details',$order->id_produk_detail)}}" class="btn btn-warning" title="Info Details"><i class="fa fa-info-circle"></i></a>
                                                             <a href="#" class="btn btn-system" title="Confirm Payment"><i class="fa fa-barcode"></i></a>
+                                                            <a href="{{URL::route('products-premium-products-checkout-shop',$order->nomor_transaksi)}}" class="btn btn-success" title="Detail Order"><i class="glyphicons glyphicons-cart_in"></i></a>
                                                             <?php
                                                                 if ($order->status==3){
                                                                 echo "<a href='#'' class='btn btn-success' title='Info Details'><i class='fa fa-download'></i></a>";
